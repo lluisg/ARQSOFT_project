@@ -1,0 +1,150 @@
+@startuml
+
+'TO DEFINE ORDER PARTICIPANTS'
+actor User
+participant UI
+participant Manager
+participant SpreadManager
+participant Spreadsheet
+participant StringManager
+participant StringParser
+
+
+'------------------5.1----------------------------------
+User -> UI: edit
+UI -> Manager ++: edit
+
+group do-while (!validCoord)
+    Manager -> UI++: askCoord()
+    UI -> User: ask coord
+    User -> UI: coor
+    return coor
+    Manager -> StringManager ++: isCellCordinate(coor)
+    return validCoord
+
+    Manager -> Coordinate **: create
+    activate Coordinate
+    return coord
+    Manager -> SpreadManager ++: coordinateInside(coord)
+    return validCoord
+
+end
+
+'--------------------5.2----------------------------------
+
+group do-while(LogicalLoopException)
+    group do-while (SyntaxException)
+
+        Manager -> UI++: askContent()
+        UI -> User: ask content
+        User -> UI : content
+        return content
+
+        Manager -> SpreadManager++: editCell(coord, content)
+        SpreadManager -> Spreadsheet ++: getCell(coord)
+        return Cell
+        alt Cell.isEmpty()
+            SpreadManager -> SpreadsheetFabric ++: createCell(coord)
+            SpreadsheetFabric -> Cell ** : create            
+            return cell
+        end
+        
+        SpreadManager -> SpreadManager ++: editContent(Cell, content)
+        SpreadManager -> StringManager ++: parseString(content)
+        StringManager -> StringParser ++: parseString(content)
+
+        alt length(content) == 0
+            StringParser -> StringParser : content = 'empty'
+        end
+        return List<Token>
+
+        alt content == 'CANCEL'
+            StringManager -> SpreadManager : CancelException
+            SpreadManager -> Manager : CancelException
+        end
+        
+        return List<Token>
+
+        SpreadManager -> SpreadFabric ++: createContent(TokenType, content);
+        SpreadFabric -> Content **: create
+        activate Content
+        return Content
+        return Content
+
+        alt TokenType == EQUAL
+
+            SpreadManager -> StringManager ++: checkSyntax(List<Token>)
+
+            alt error in syntax
+                note right of StringManager: Use Case 10
+
+                return SyntaxException
+                SpreadManager -> Manager : SyntaxException
+            end
+ 
+            SpreadManager -> StringManager ++: infix2postfix(List<Token>)
+            return List<FormulaComponent>
+            SpreadManager -> Content : setFormulaComp(List<FormulaComponent>)
+            SpreadManager -> Cell : setContent(Content)
+            note left Cell : changedCell = true
+        end
+
+        deactivate SpreadManager
+
+'----------------5.3 (different order)--------------------
+            
+        SpreadManager -> SpreadManager ++: updateCell(Cell)
+        SpreadManager -> Cell ++: getContent()
+        return content
+
+        alt content.isInstanceOf("Formula")
+            SpreadManager -> Content ++: getUsedCoordinates()
+            return listCoor
+
+            SpreadManager -> SpreadManager ++: checkLogicalLoop(Cell, listCoor)
+            SpreadManager -> Spreadsheet ++: getCells (List<Coordinate>)
+            return List<Cell>
+
+            loop nCell in List<Cell>
+                SpreadManager -> nCell ++: isWatching(Cell)
+                return iswatching
+                alt iswatching
+                    SpreadManager -> Manager : LogicalLoopException
+                end
+            deactivate SpreadManager
+            end
+
+            loop coordinate in listCoor
+                SpreadManager -> SpreadManager ++: getCell(coordinate)
+                return nCell
+                SpreadManager -> Spreadsheet : addCell(coordinate, nCell)
+                SpreadManager -> nCell : registerObserver(Cell);
+                SpreadManager -> Cell : registerObserved(nCell);
+            end
+
+            SpreadManager -> Calculator ++: computeFormula(content)
+            note left Calculator : See UseCase7: EvaluateFunction
+            alt Exception
+                Calculator -> SpreadManager : NaNException
+                SpreadManager -> Manager : NaNException
+            end
+            return result
+
+            SpreadManager -> Content : setResult(result)
+        end
+
+        SpreadManager -> Cell : updateState()
+        SpreadManager -> Cell : notifyObservers()
+        SpreadManager -> Cell : setCellUnchanged();
+        note left Cell : TAMBE NECESARI SI NO FEM SERVIR EL CHANGEDCELL?
+
+        deactivate SpreadManager
+        SpreadManager -> Spreadsheet : addCell(coord, Cell);
+
+    end
+end
+
+deactivate SpreadManager
+deactivate Manager
+
+@enduml

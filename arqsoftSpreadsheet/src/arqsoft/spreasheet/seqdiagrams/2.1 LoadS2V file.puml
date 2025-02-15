@@ -1,0 +1,35 @@
+@startuml
+actor User
+User -> UI++:Load S2V file
+UI -> Manager ++:Load S2V file
+Manager -> UI++: local or internet?
+UI -> User: Local or internet?
+User -> UI :response
+return response
+
+alt response == local
+    group while(!exsists && !canRead)
+    Manager -> UI++: ask path
+    UI -> User: ask path
+    User -> UI: path
+    return path
+    Manager -> FileManager++: check file(path) exists && canRead
+    return exists, canRead
+    end
+else response == internet 
+    group while(!exists && status != ok)
+    Manager -> UI++: ask URL
+    UI -> User: ask URL
+    User -> UI: URL
+    return URL
+    Manager -> FileManager ++: check InternetFile(URL)
+    return exists
+    Manager -> FileManager ++: check connection InternetFile(URL)
+    return status
+    end
+end
+
+
+note right of Manager: path or URL ok, go to Seq. Diagram 2 LoadS2VFile
+
+@enduml

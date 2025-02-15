@@ -1,0 +1,19 @@
+@startuml
+
+actor User
+
+User -> UI : display
+UI -> Manager ++: display
+
+Manager -> SpreadsheetManager ++: displaySpreadsheet()
+SpreadsheetManager -> Spreadsheet ++: getDisplayMap()
+
+return map<Coordinate,String>
+return map
+
+Manager -> SpreadManager ++: getSizeSpread()
+return size
+Manager -> UI : displaySpreadsheet(map, size)
+
+deactivate Manager
+@enduml

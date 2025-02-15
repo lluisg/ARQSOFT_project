@@ -1,0 +1,5 @@
+- Functions i operadors com a enum i cada un en el seu index DONE!
+- afegir "ToekenInfos" al constructor de StringParser DONE!
+- afegir "=" com a tipus de  token i treure exepcióó si no comença per = DONE!
+- treure "tokens" com a atribut the StringParser DONE!
+- canviar numeros dels ToekenInfos?

@@ -1,0 +1,28 @@
+@startuml
+
+'TO DEFINE ORDER PARTICIPANTS'
+actor User
+participant UI
+participant Manager
+participant SpreadManager
+participant Spreadsheet
+participant StringManager
+participant StringParser
+
+
+User -> UI++: Edit Cell
+UI -> Manager ++:Edit Cell
+Manager -> SpreadManager ++: size spreadsheet
+return maxrow, maxcol
+
+group do-while ( 0 > row < maxrow || 0 > row < maxrow || \n col != int || row != int || row*col > MAX_SIZE)
+    Manager -> UI++: ask coord
+    UI -> User: ask coord
+    User -> UI: row col
+    UI -> Manager: row col
+    Manager -> StringParser ++: parseString(row col)
+    return Coordinate
+    end
+
+
+@enduml

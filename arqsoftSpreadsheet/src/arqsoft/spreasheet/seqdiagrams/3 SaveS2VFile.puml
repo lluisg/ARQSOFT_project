@@ -1,0 +1,45 @@
+@startuml
+
+actor User
+User -> UI:save
+UI -> Manager ++:save
+
+group while (directory_notfound)
+    Manager -> UI++: askSavePath()
+    UI -> User: ask savepath
+    User -> UI : path
+    return path
+    Manager -> FileManager++: checkSaveDirectory(path)
+    alt FileException
+        FileManager -> Manager : directory_notfound
+        Manager -> UI : directory_notfound
+        UI -> User : directory_notfound
+    end
+    deactivate FileManager
+end
+group while (name_notfound)
+    Manager -> UI++: askSaveName()
+    UI -> User: ask name
+    User -> UI : name
+    return name
+    Manager -> FileManager++: checkSaveName(path+file)
+    alt FileException
+        FileManager -> Manager : name_notfound
+        Manager -> UI : name_notfound
+        UI -> User : name_notfound
+    end
+    note left FileManager : path+name = filename
+    deactivate FileManager
+end
+
+Manager -> SpreadsheetManager ++: saveSpreadsheet()
+SpreadsheetManager -> Spreadsheet ++: getSaveMap()
+return map<Coordinate, String>
+return map
+Manager -> FileManager ++: saveFile(filename, map)
+FileManager -> FileParser ++: parseSpreadsheet(map)
+return file_string
+FileManager -> FileSaver : saveS2VFile(filename,file_string)
+deactivate FileManager
+deactivate Manager
+@enduml

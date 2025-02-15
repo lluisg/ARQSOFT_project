@@ -1,0 +1,77 @@
+@startuml
+
+'TO DEFINE ORDER PARTICIPANTS'
+actor User
+participant UI
+participant Manager
+participant SpreadManager
+participant Spreadsheet
+participant StringManager
+participant Cell
+participant Calculator
+
+alt Content.type == formula
+    alt previously
+        User -> UI++:Edit Cell
+        UI -> Manager ++:Edit Cell
+    note left of Manager: Aqui es on comensa el primer do-while(logical loop) que apareix
+
+        User -> UI : content
+        UI -> Manager : content
+        Manager -> SpreadManager++: EditCell(Coordinate, content)
+        SpreadManager -> StringManager ++: parse(content)
+        return List<FormulaComponent>
+
+        note left of SpreadManager: See previous sequence diagram
+    end
+
+    group do-while(LogicalLoop)
+
+        SpreadManager -> SpreadManager ++: checkLogicalLoop(List<FormulaComponent>)
+        SpreadManager -> SpreadManager ++: CellsFromFormula(List<FormulaComponent>)
+        return List<Cells>
+
+        loop nCell in List<Cells>
+            SpreadManager -> nCell ++: getCoordinates()
+            return CellCoordinates
+        end
+
+
+        alt Coordinates == CellCoordinates
+            return LogicalLoop
+        end
+    end
+
+    SpreadManager -> Calculator ++: calculate(List<FormulaComponent>)
+    note left Calculator : See UseCase7: EvaluateFunction
+    alt Exception
+        note left Calculator : value = NaN
+    end
+    return value
+
+    SpreadManager -> Cell : setFormula(value, List<FormulaComponents>)
+
+
+    SpreadManager -> Cell : unsubscribeObservables()
+    SpreadManager -> SpreadManager ++: CellsFromFormula(List<FormulaComponent>)
+    return List<Cells>
+
+    loop nCell in List<Cells>
+        SpreadManager -> nCell : subscribe(Cell)
+        SpreadManager -> nCell : notify()
+        SpreadManager -> Cell : addObservable(nCell)
+    end
+
+else Content.Type == number
+    SpreadManager -> Cell : setNumerical(List<FormulaComponents>)
+    SpreadManager -> Cell : unsubscribeObservables()
+else Content.Type == text
+    SpreadManager -> Cell : setText(List<FormulaComponents>)
+    SpreadManager -> Cell : unsubscribeObservables()
+end
+
+return ok
+return ok
+return ok
+
+@enduml

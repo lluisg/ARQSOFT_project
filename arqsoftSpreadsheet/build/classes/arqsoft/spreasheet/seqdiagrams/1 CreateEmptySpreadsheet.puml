@@ -1,0 +1,36 @@
+@startuml
+
+actor User 
+User -> UI ++: create
+
+UI -> Manager ++: create
+
+group do-while (col == null || row == null || row*col > MAX_SIZE)
+    Manager -> UI++: askCol()
+    UI -> User: ask col
+    User -> UI: col
+    alt NumberFormatException
+        note right UI: col=null
+    end
+    return col
+
+    Manager -> UI++: askRow()
+    UI -> User: ask row
+    User -> UI: row
+    alt NumberFormatException
+        note right UI :row=null
+    end
+    return row
+
+end
+
+Manager -> SpreadsheetManager ++: createEmptySpreadsheet (row, col)
+SpreadsheetManager -> SpreadsheetFabric ++: createEmptySpreadsheet (row, col)
+SpreadsheetFabric -> Spreadsheet **:create
+activate Spreadsheet
+return Spreadsheet
+return Spreadsheet
+deactivate Manager
+deactivate UI
+
+@enduml

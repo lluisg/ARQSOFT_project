@@ -1,0 +1,169 @@
+@startuml
+
+'TO DEFINE ORDER PARTICIPANTS'
+actor User
+participant UI
+participant Manager
+participant SpreadManager
+participant Spreadsheet
+participant StringManager
+participant StringParser
+
+
+'------------------5.1----------------------------------
+User -> UI++: Edit Cell
+UI -> Manager ++:Edit Cell
+
+group do-while (!validCoord || col == null || row == null || row*col > MAX_SIZE)
+    Manager -> UI++: askCol()
+    UI -> User: ask col
+    User -> UI: col
+    return colS
+    Manager -> StringParser ++: intString(colS)
+    return col
+
+    Manager -> UI++: askRow()
+    UI -> User: ask row
+    User -> UI: row
+    return rowS
+    Manager -> StringParser ++: intString(rowS)
+    return row
+
+    Manager -> SpreadManager ++: coordInside(coord)
+    return validCoord
+
+end
+
+'--------------------5.2----------------------------------
+
+group do-while(LogicalLoopException)
+    group do-while (SyntaxException)
+
+        Manager -> UI++: ask content
+        UI -> User: ask content
+        User -> UI : content
+        return content
+
+        Manager -> SpreadManager++: EditCell(coord, content)
+
+        SpreadManager -> SpreadManager ++: editContent(coord, content)
+
+        SpreadManager -> Spreadsheet ++: getCell(coord)
+        return Cell
+
+        alt Cell.isEmpty()
+            SpreadManager -> SpreadsheetFabric ++: createCell(coord)
+            SpreadsheetFabric -> Cell ** : create            
+            return cell
+        end
+
+        SpreadManager -> Cell ++: setContent(content)
+        Cell -> Content : setContent(content)
+        deactivate Cell
+        'return cell
+        note right SpreadManager: in Cell: changedCell = true
+        
+        'SpreadManager -> SpreadManager ++: updateContent(cell)
+        'note right SpreadManager: here we will update the list of Components if formula, update content for else
+
+        SpreadManager -> StringManager ++: parseString(content)
+        StringManager -> StringParser ++: parseString(content)
+
+        alt content == 'CANCEL'
+            StringParser -> StringManager : cancel
+            StringManager -> SpreadManager : cancel
+            SpreadManager -> Manager : cancel
+
+        else length(content) == 0
+            StringParser -> StringParser : content = 'empty'
+        end
+        
+        return List<Token>
+        return List<Token>
+
+        alt List<Tokens>[0] == '='
+
+            SpreadManager -> StringManager ++: checkSyntax(List<Tokens>)
+
+            alt error in syntax
+                note right of StringManager: Use Case 10
+
+                return SyntaxError
+                SpreadManager -> Manager : SyntaxException
+                Manager -> UI : SyntaxException
+                UI -> User : SyntaxException
+
+            end
+ 
+            SpreadManager -> StringManager ++: infix2postfix(List<Tokens>)
+           
+
+            return List<FormulaComponent>
+            SpreadManager -> Cell ++: setFormulaComp(List<FormulaComponent>)
+            Cell -> Content : setFormulaComp(List<FormulaComponent>)
+            deactivate Cell
+
+        else List<Tokens>.type == number
+            SpreadManager -> Cell : setValue(List<Tokens>))
+
+        end
+
+        deactivate SpreadManager
+
+'----------------5.3 (different order)--------------------
+            
+            SpreadManager -> SpreadManager ++: update(coord)
+            SpreadManager -> SpreadManager ++: checkLogicalLoop(List<FormulaComponent>)
+            SpreadManager -> SpreadManager ++: cellsFromFormula(List<FormulaComponent>)
+            return List<Coordinate>
+            SpreadManager -> Spreadsheet ++: getCells (List<Coordinate>)
+            return List<Cell>
+
+            loop nCell in List<Cell>
+                SpreadManager -> nCell ++: getCoordinates()
+                return cellCoord
+                alt Coordinates == cellCoord
+                    SpreadManager -> Manager : LogicalLoopException
+                    Manager -> UI : LogicalLoopException
+                    UI -> User : LogicalLoopException
+                end
+
+                SpreadManager -> nCell ++: getObservables()
+                return List<Cell>
+                SpreadManager -> SpreadManager: appendCells (List<Cell>)
+            end
+            deactivate SpreadManager
+
+            SpreadManager -> Calculator ++: calculate(List<FormulaComponent>)
+            note left Calculator : See UseCase7: EvaluateFunction
+            alt Exception
+                note left Calculator : value = NaN
+            end
+            return value
+
+            SpreadManager -> Cell : setResult(value)
+            SpreadManager -> Cell : setFormulaComp(List<FormulaComponent>)
+
+
+            SpreadManager -> Cell : unsubscribeObservables()
+            SpreadManager -> SpreadManager ++: CellsFromFormula(List<FormulaComponent>)
+            return List<Cell>
+
+            loop nCell in List<Cell>
+                SpreadManager -> nCell : subscribe(nCell)
+                SpreadManager -> nCell : notify()
+                SpreadManager -> Cell : addObservable(nCell)
+            end
+
+
+        
+        SpreadManager -> Cell : setContent(content)
+        SpreadManager -> Spreadsheet : setCell
+    end
+end
+
+return ok
+return ok
+return ok
+
+@enduml

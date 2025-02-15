@@ -1,0 +1,83 @@
+@startuml
+actor User
+User -> UI : load
+UI -> Manager ++: load
+group while(origin == ("l" || "local" || "i" || "internet")
+    Manager -> UI ++: askOriginFile()
+    UI -> User : ask origin
+    User -> UI : origin
+    return origin
+end
+group while(not_valid)
+    Manager -> UI ++: askOpenPath()
+    UI -> User : ask path
+    User -> UI : path
+    return path
+    alt origin=="l" || "local"
+        Manager -> FileManager ++: checkOpenLocalFile(path)
+        alt FileException
+            FileManager -> Manager : not_valid
+            FileManager -> UI : not_valid
+            FileManager -> User : not_valid
+        end
+        deactivate FileManager
+    else origin=="i" || "internet"
+        Manager -> FileManager ++: checkOpenLocalFile(path)
+        alt FileException
+            FileManager -> Manager : not_valid
+            Manager -> UI : not_valid
+            UI -> User : not_valid
+        end
+        deactivate FileManager
+    end
+end
+
+
+
+Manager -> FileManager ++:readFile (path, origin)
+alt origin=="l" || "local"
+    FileManager -> FileLoader ++:readLocalFile(path)
+else origin=="i" || "internet"
+    FileManager -> FileLoader :readInternetFile(path)
+end
+return file_string
+FileManager -> FileParser ++: parseFile (file_string)
+return map<Coordinate,String>
+return map
+
+Manager -> SpreadsheetManager ++:spreadsheetFromFile(map)
+SpreadsheetManager -> SpreadsheetFabric++:spreadsheetFromFile(map)
+SpreadsheetFabric -> Spreadsheet **: create
+activate Spreadsheet
+return spreadsheet
+loop coordinate in map
+    SpreadsheetFabric -> Cell **:createEmptyCell()
+    activate Cell
+    return cell
+    SpreadsheetFabric -> SpreadsheetManager ++: editContent(cell, content)
+    note right SpreadsheetManager : see Sequence Diagram 5
+    deactivate SpreadsheetManager
+    SpreadsheetFabric -> Spreadsheet : addCell(coor, cell)
+end
+return Spreadsheet
+
+loop coordinate in map
+    SpreadsheetManager -> Spreadsheet ++: getCell(coordinate)
+    return cell
+    SpreadsheetManager -> Cell ++: getListWatchedCoordinates()
+    return listCoord
+
+    loop ncoordinate in listCoord
+
+        SpreadsheetManager -> Spreadsheet ++: getCell(ncoordinate)
+        return ncell
+        SpreadsheetManager -> Cell : registerObserved(ncell)
+        SpreadsheetManager -> nCell : registerObserver(cell)
+    end
+end
+
+deactivate SpreadsheetManager
+deactivate Manager
+
+
+@enduml

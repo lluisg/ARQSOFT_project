@@ -1,0 +1,59 @@
+@startuml
+actor User
+
+User -> UI:size
+UI -> Manager ++:size
+
+group do-while (row == null)
+    Manager -> UI++: askRow()
+    UI -> User : ask row
+    User -> UI: row
+    return row
+    alt NumberFormatException
+        note right UI : row = null
+    end
+end
+group do-while (col == null)
+    Manager -> UI++: askCol()
+    UI -> User: ask col 
+    User -> UI: col
+    return col
+    alt NumberFormatException
+        note right UI : col = null
+    end
+end
+
+Manager -> SpreadManager ++: changeSizeSpreadsheet(row, col)
+alt row < maxRow || col < maxCol
+    SpreadManager -> Coordinate **: create
+    activate Coordinate
+    return coordinate
+    loop coor.row in range(Row, maxRow+1) && coor.col in range(1, maxCol) ||| \n coor.col in range(Col, maxCol+1) && coor.row in range(1, maxRow)
+        SpreadManager -> Spreadsheet ++: getCell(coordinate)
+        return Cell
+        alt Cell != null
+
+            SpreadManager -> Cell ++: getListObservers()
+            return List<Cells>
+            alt !List<Cells>.isEmpty
+                SpreadManager -> Manager : Exception
+                Manager -> UI : Exception
+                UI -> User : Exception
+            end
+
+            SpreadManager -> Cell ++: getListObserving()
+            return List<Cells>
+            loop nCell in List<Cells>
+                SpreadManager -> nCell : removeObserver(Cell)
+            end
+            
+            SpreadManager -> Spreadsheet : removeCell(coordinate)
+        end
+    end
+end
+SpreadManager -> Spreadsheet : setSize(Row, Col)
+
+deactivate SpreadManager
+deactivate Manager
+
+@enduml

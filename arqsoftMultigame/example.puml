@@ -1,0 +1,176 @@
+@startuml
+abstract class upc.edu.etsetb.arqsoft.multigame.server.GameFactory
+abstract class upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController
+abstract class upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer
+annotation java.lang.Override
+class arqsoftmultigame.ArqsoftMultigame
+class java.lang.Exception
+class java.util.ArrayList
+class java.util.List
+class java.util.Objects
+class java.util.logging.Level
+class java.util.logging.Logger
+class upc.edu.etsetb.arqsoft.multigame.server.FrameworkException
+class upc.edu.etsetb.arqsoft.multigame.server.UnknownFactoryException
+class upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController
+class upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory
+class upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessBoard
+class upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessCell
+class upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessCoordinate
+class upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPiece
+class upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPieceSpec
+class upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer
+class upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayerSpec
+class upc.edu.etsetb.arqsoft.multigame.server.domain.BoardException
+class upc.edu.etsetb.arqsoft.multigame.server.domain.CellException
+class upc.edu.etsetb.arqsoft.multigame.server.domain.PieceException
+class upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerException
+class upc.edu.etsetb.arqsoft.multigame.server.domain.ThirdPartyException
+class upc.edu.etsetb.arqsoft.multigame.server.domain.TokenException
+class upc.edu.etsetb.arqsoft.multigame.server.run.ServerDemo
+class upc.edu.etsetb.arqsoft.utilities.TupleOf2
+enum upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPieceColor
+enum upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessState
+interface upc.edu.etsetb.arqsoft.multigame.server.GameController
+interface upc.edu.etsetb.arqsoft.multigame.server.UserSessController
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.Board
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.Cell
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.CellSpec
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.Coordinate
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.GameState
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.Piece
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.PieceSpec
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.Player
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerSpec
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.ThirdParty
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.ThirdPartySpec
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.Token
+interface upc.edu.etsetb.arqsoft.multigame.server.domain.TokenSpec
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.BoardException
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PieceException
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerException
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.ThirdPartyException
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.TokenException
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Board
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Piece
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PieceSpec
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Player
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerSpec
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.ThirdParty
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Token
+upc.edu.etsetb.arqsoft.multigame.server.GameFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.TokenSpec
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> upc.edu.etsetb.arqsoft.multigame.server.GameFactory
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> java.lang.Override
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> java.util.ArrayList
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> java.util.List
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> java.util.logging.Level
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> java.util.logging.Logger
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> upc.edu.etsetb.arqsoft.multigame.server.FrameworkException
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.BoardException
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PieceException
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerException
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.ThirdPartyException
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController --|> upc.edu.etsetb.arqsoft.multigame.server.GameController
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Board
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.GameState
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Player
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerSpec
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.ThirdParty
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.GameFactory
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer ..> java.lang.Override
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer ..> java.util.List
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.BoardException
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PieceException
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer ..> upc.edu.etsetb.arqsoft.utilities.TupleOf2
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Board
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Coordinate
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Piece
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PieceSpec
+upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer --|> upc.edu.etsetb.arqsoft.multigame.server.domain.Player
+upc.edu.etsetb.arqsoft.multigame.server.FrameworkException --|> java.lang.Exception
+upc.edu.etsetb.arqsoft.multigame.server.UnknownFactoryException --|> java.lang.Exception
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.GameFactory
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController --|> upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractGameController
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> java.lang.Override
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.FrameworkException
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessBoard
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayerSpec
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.BoardException
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PieceException
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerException
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.ThirdPartyException
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPieceColor
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessState
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.GameController
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Board
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Player
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerSpec
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.ThirdParty
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory --|> upc.edu.etsetb.arqsoft.multigame.server.GameFactory
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> java.lang.Override
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessBoard
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.BoardException
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PieceException
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerException
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.ThirdPartyException
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.TokenException
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.GameController
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Board
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Piece
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PieceSpec
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Player
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerSpec
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.ThirdParty
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Token
+upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory ..> upc.edu.etsetb.arqsoft.multigame.server.domain.TokenSpec
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessBoard ..> java.lang.Override
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessBoard --|> upc.edu.etsetb.arqsoft.multigame.server.domain.Board
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessBoard ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Cell
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessBoard ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Coordinate
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessBoard ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Piece
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessCell ..> java.lang.Override
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessCell --|> upc.edu.etsetb.arqsoft.multigame.server.domain.Cell
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessCell ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Piece
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessCoordinate --|> upc.edu.etsetb.arqsoft.multigame.server.domain.Coordinate
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPiece --|> upc.edu.etsetb.arqsoft.multigame.server.domain.Piece
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPieceSpec --|> upc.edu.etsetb.arqsoft.multigame.server.domain.PieceSpec
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.GameFactory
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer --|> upc.edu.etsetb.arqsoft.multigame.server.impl.AbstractPlayer
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer ..> java.lang.Override
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer ..> java.util.ArrayList
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer ..> java.util.List
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.BoardException
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PieceException
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer ..> upc.edu.etsetb.arqsoft.utilities.TupleOf2
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Board
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Coordinate
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PieceSpec
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.Player
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayer ..> upc.edu.etsetb.arqsoft.multigame.server.domain.TokenSpec
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessPlayerSpec --|> upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerSpec
+upc.edu.etsetb.arqsoft.multigame.server.domain.BoardException --|> java.lang.Exception
+upc.edu.etsetb.arqsoft.multigame.server.domain.CellException --|> java.lang.Exception
+upc.edu.etsetb.arqsoft.multigame.server.domain.PieceException --|> java.lang.Exception
+upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerException --|> java.lang.Exception
+upc.edu.etsetb.arqsoft.multigame.server.domain.ThirdPartyException --|> java.lang.Exception
+upc.edu.etsetb.arqsoft.multigame.server.domain.TokenException --|> java.lang.Exception
+upc.edu.etsetb.arqsoft.multigame.server.run.ServerDemo ..> upc.edu.etsetb.arqsoft.multigame.server.GameFactory
+upc.edu.etsetb.arqsoft.multigame.server.run.ServerDemo ..> java.util.logging.Level
+upc.edu.etsetb.arqsoft.multigame.server.run.ServerDemo ..> java.util.logging.Logger
+upc.edu.etsetb.arqsoft.multigame.server.run.ServerDemo ..> upc.edu.etsetb.arqsoft.multigame.server.UnknownFactoryException
+upc.edu.etsetb.arqsoft.multigame.server.run.ServerDemo ..> upc.edu.etsetb.arqsoft.multigame.server.chess.ChessFactory
+upc.edu.etsetb.arqsoft.multigame.server.run.ServerDemo ..> upc.edu.etsetb.arqsoft.multigame.server.domain.BoardException
+upc.edu.etsetb.arqsoft.utilities.TupleOf2 ..> java.lang.Override
+upc.edu.etsetb.arqsoft.utilities.TupleOf2 ..> java.util.Objects
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessState ..> java.lang.Override
+upc.edu.etsetb.arqsoft.multigame.server.chess.domain.ChessState --|> upc.edu.etsetb.arqsoft.multigame.server.domain.GameState
+upc.edu.etsetb.arqsoft.multigame.server.GameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.BoardException
+upc.edu.etsetb.arqsoft.multigame.server.GameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PieceException
+upc.edu.etsetb.arqsoft.multigame.server.GameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerException
+upc.edu.etsetb.arqsoft.multigame.server.GameController ..> upc.edu.etsetb.arqsoft.multigame.server.domain.PlayerSpec
+upc.edu.etsetb.arqsoft.multigame.server.domain.Player ..> upc.edu.etsetb.arqsoft.multigame.server.GameFactory
+upc.edu.etsetb.arqsoft.multigame.server.domain.Player ..> java.util.List
+upc.edu.etsetb.arqsoft.multigame.server.domain.Player ..> upc.edu.etsetb.arqsoft.utilities.TupleOf2
+@enduml

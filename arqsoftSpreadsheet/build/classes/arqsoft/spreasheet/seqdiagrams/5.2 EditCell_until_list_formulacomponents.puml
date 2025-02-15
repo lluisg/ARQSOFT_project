@@ -1,0 +1,78 @@
+@startuml
+
+'TO DEFINE ORDER PARTICIPANTS'
+actor User
+participant UI
+participant Manager
+participant SpreadManager
+participant Spreadsheet
+participant StringManager
+participant StringParser
+participant FormulaComponentFabric
+
+alt previously
+    User -> UI++:Edit Cell
+    UI -> Manager ++:Edit Cell
+    note left of Manager: See previous sequence diagram
+end
+
+group do-while ( SyntaxError)
+
+    Manager -> UI++: ask content
+    UI -> User: ask content
+    User -> UI : content
+    return content
+
+    Manager -> SpreadManager++: EditCell(Coordinate, content)
+
+    SpreadManager -> Spreadsheet ++: getCell(row, col)
+    return Cell
+
+    alt cell.isEmpty()
+        SpreadManager -> Spreadsheet ++: createCell(Coordinate)
+        return Cell
+    end
+
+    SpreadManager -> StringManager ++: parse(content)
+    StringManager -> StringParser ++: parse(content)
+
+    alt content == 'CANCEL'
+        StringParser -> StringManager : cancel
+        StringManager -> SpreadManager : cancel
+        SpreadManager -> Manager : cancel
+
+    else length(content) == 0
+        StringParser -> StringParser : content = 'empty'
+    end
+    return List<Tokens>
+
+    alt Tokens(0) == '='
+
+        StringManager -> StringManager ++: checkSyntax(List<Tokens>)
+        
+        alt error in syntax
+            note right of StringManager: Use Case 10
+
+            return SyntaxError
+            
+        end
+    end
+end
+
+StringManager -> StringManager ++: infix2postfix(List<Tokens>)
+return List<Tokens>
+
+loop for each tokens in List<Tokens>
+    StringManager -> FormulaComponentFabric ++: createFormulaComponent(token)
+    return FormulaComponent
+end
+
+StringManager -> StringManager ++: groupFunctionsFormula(List<FormulaComponent>)
+note right of StringManager: Puts the elements inside the formulas
+
+return List<FormulaComponent>
+
+return List<FormulaComponent>
+
+
+@enduml

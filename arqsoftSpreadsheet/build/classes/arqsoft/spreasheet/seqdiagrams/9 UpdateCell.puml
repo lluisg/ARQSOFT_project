@@ -1,0 +1,25 @@
+@startuml
+
+xCell -> Cell ++: notify()
+
+Cell -> Formula ++: update()
+Formula -> Calculator ++: calculate(List<FormulaComponent>)
+note left Calculator : See sequence diagram EvaluateFunction
+alt Exception
+    note left Calculator : value = NaN
+end
+return value
+
+Formula -> Formula ++: setValue()
+deactivate Formula
+deactivate Formula
+
+Cell -> Cell ++: getObservers(List<FormulaComponent>)
+return List<Cells>
+
+loop nCell in List<Cells>
+    Cell -> nCell : notify()
+end
+return ok
+
+@enduml

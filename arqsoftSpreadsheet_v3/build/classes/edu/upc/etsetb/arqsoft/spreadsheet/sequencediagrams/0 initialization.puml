@@ -1,0 +1,42 @@
+@startuml
+
+actor User
+User -> Manager **: create()
+activate Manager 
+
+Manager -> SpreadManager **: create
+activate SpreadManager
+return spreadMng
+
+Manager -> FileManager **: create
+activate FileManager
+return fileMng
+
+Manager -> UserInterface **: create
+activate UserInterface
+return UI
+
+return Manager
+
+
+User -> Manager ++: Init()
+Manager -> UserInterface ++: DisplayMenu()
+
+note left UserInterface : waits for users commands
+
+return instruction
+
+alt instruction == "create"
+    note right Manager : see Sequence Diagram 1
+else instruction == "load"
+    note right Manager : see Sequence Diagram 2
+else instruction == "save"
+    note right Manager : see Sequence Diagram 3
+else instruction == "display"
+    note right Manager : see Sequence Diagram 4
+else instruction == "edit"
+    note right Manager : see Sequence Diagram 5
+else instruction == "size"
+    note right Manager : see Sequence Diagram 6
+end
+@enduml
